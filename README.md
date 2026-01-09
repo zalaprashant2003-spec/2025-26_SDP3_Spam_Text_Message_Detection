@@ -5,6 +5,7 @@ This project is a Machine Learning-based system that detects whether a text mess
 ## Features
 - Detects spam SMS messages
 - Simple and clean user interface using Streamlit
+- Email Detection for this use Telegram Bot.
 
 ## Tech Stack
 - Python
@@ -36,6 +37,9 @@ Contains 5169 labeled messages (spam & ham).
 8. Result is displayed on frontend
 
 ## Work
-Lab1-Study how to do this project, find dataset.
-Lab2&3 - Implement the Naive Bayes model for spam detection.
+- Lab1-Study how to do this project, find dataset.
+- Lab2&3
+       - Implement the Naive Bayes model for spam detection.
        - Add a simple user interface to test message predictions.
+- Lab4 - Add simple frontend and connect with model.
+- Lab5 - Connect model with telegram bot for Email and balaced dataset.
