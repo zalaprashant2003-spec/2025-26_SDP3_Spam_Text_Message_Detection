@@ -13,6 +13,13 @@ from google.auth.transport.requests import Request
 # ================= CONFIG ================= #
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
 
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
+
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
@@ -128,6 +135,10 @@ def main():
                 if not is_spam(email_text):
                     send_telegram_notification(
                         "✅ New email received (not spam)."
+                    )
+                else:
+                    send_telegram_notification(
+                        "🚫 Spam email detected. Notification suppressed."
                     )
 
 
