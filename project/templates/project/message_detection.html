@@ -1,0 +1,117 @@
+{% extends 'project/base.html' %}
+
+{% block title %}Message Spam Detection - SpamShield{% endblock %}
+
+{% block content %}
+<section class="info-section" style="min-height: calc(100vh - 200px);">
+    <div class="container">
+        <div class="detection-container">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <h1 style="color: var(--dark-blue); font-weight: 700; margin-bottom: 0.5rem;">
+                    <i class="fas fa-sms"></i> Message Spam Detection
+                </h1>
+                <p style="color: var(--text-secondary); font-size: 1.1rem;">
+                    Paste your message below and let our AI-powered system instantly analyze whether it's spam or legitimate.
+                </p>
+            </div>
+
+            <form method="post" class="detection-form">
+                {% csrf_token %}
+
+                <!-- Message Input -->
+                <div class="form-group mb-4">
+                    <label for="message">
+                        <i class="fas fa-edit"></i> Message Text
+                    </label>
+                    <textarea 
+                        class="form-control" 
+                        id="message" 
+                        name="message" 
+                        placeholder="Paste your message here... (e.g., 'Congratulations! You've won $1000. Click here to claim...')" 
+                        required
+                    ></textarea>
+                    <small class="text-muted d-block mt-2">
+                        <i class="fas fa-info-circle"></i> Your message is processed locally and never stored on our servers.
+                    </small>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary-custom btn-detect">
+                    <i class="fas fa-shield-alt"></i> Analyze Message
+                </button>
+            </form>
+
+            <!-- Result Display -->
+            {% if result %}
+                {% if result == "Spam" %}
+                    <div class="result-box spam">
+                        <h3 style="margin-bottom: 0.75rem;">
+                            <i class="fas fa-exclamation-circle"></i> Warning: Likely SPAM
+                        </h3>
+                        <p style="margin-bottom: 1rem;">
+                            Our AI model detected patterns commonly found in spam messages. <strong>We recommend not interacting with this message.</strong>
+                        </p>
+                        <div style="background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 8px; font-size: 0.95rem;">
+                            <strong>Safety Tips:</strong>
+                            <ul style="margin: 0.5rem 0 0 1.5rem;">
+                                <li>Do not click any links in the message</li>
+                                <li>Do not reply or provide personal information</li>
+                                <li>Delete the message immediately</li>
+                                <li>Report it as spam to your carrier</li>
+                            </ul>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="result-box not-spam">
+                        <h3 style="margin-bottom: 0.75rem;">
+                            <i class="fas fa-check-circle"></i> Likely LEGITIMATE
+                        </h3>
+                        <p style="margin-bottom: 1rem;">
+                            Our AI model did not detect typical spam patterns in this message. However, always verify the sender independently before taking action.
+                        </p>
+                        <div style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 8px; font-size: 0.95rem;">
+                            <strong>Still Be Cautious:</strong>
+                            <ul style="margin: 0.5rem 0 0 1.5rem;">
+                                <li>Verify the sender's identity independently</li>
+                                <li>Check official websites directly, not via links</li>
+                                <li>Never share sensitive information via text</li>
+                                <li>When in doubt, contact the organization directly</li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+
+            <!-- Quick Examples Section -->
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 2px solid var(--border-color);">
+                <h3 style="color: var(--dark-blue); font-weight: 600; margin-bottom: 1.5rem; text-align: center;">
+                    <i class="fas fa-book"></i> Examples
+                </h3>
+                <div class="row g-3">
+                    <div class="col-lg-6">
+                        <div style="background: #fee2e2; padding: 1.2rem; border-radius: 8px; border-left: 4px solid var(--danger-red);">
+                            <h5 style="color: var(--danger-red); font-weight: 600; margin-bottom: 0.5rem;">
+                                <i class="fas fa-times-circle"></i> Typical Spam Example
+                            </h5>
+                            <p style="font-size: 0.9rem; margin: 0; color: #7f1d1d;">
+                                "URGENT: Click here to verify your Bank Account. Your account will be locked in 24 hours. Link: bit.ly/xyz123"
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div style="background: #d1fae5; padding: 1.2rem; border-radius: 8px; border-left: 4px solid var(--success-green);">
+                            <h5 style="color: var(--success-green); font-weight: 600; margin-bottom: 0.5rem;">
+                                <i class="fas fa-check-circle"></i> Legitimate Example
+                            </h5>
+                            <p style="font-size: 0.9rem; margin: 0; color: #065f46;">
+                                "Hi John, your order #12345 has been shipped. Track it at amazon.com/orders. Thank you for shopping!"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

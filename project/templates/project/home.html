@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -122,3 +123,203 @@
 
 </body>
 </html>
+=======
+{% extends 'project/base.html' %}
+
+{% block title %}Home - SpamShield | Protect from Spam Messages{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Protect Yourself from <span class="hero-highlight">Spam Messages</span></h1>
+        <p>Advanced AI-powered detection system that identifies and filters malicious spam messages in real-time, keeping your personal information and finances safe.</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="{% url 'message_detection' %}" class="btn btn-primary-custom">
+                <i class="fas fa-check-circle"></i> Test Message Now
+            </a>
+            <a href="#learn-more" class="btn btn-secondary-custom">
+                <i class="fas fa-arrow-down"></i> Learn More
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- What is Spam Section -->
+<section class="info-section" id="learn-more">
+    <div class="container">
+        <h2 class="section-title">Why Spam Detection Matters</h2>
+        
+        <div class="row g-4 mb-5">
+            <!-- Card 1: What is Spam -->
+            <div class="col-lg-4 col-md-6">
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3>What are Spam Messages?</h3>
+                    <p>Spam messages are unsolicited texts sent in bulk, often containing:</p>
+                    <ul>
+                        <li><strong>Phishing attempts</strong> - fake links to steal credentials</li>
+                        <li><strong>Lottery/Prize scams</strong> - "You've won!" false claims</li>
+                        <li><strong>Financial fraud</strong> - fake bank/PayPal notifications</li>
+                        <li><strong>OTP theft</strong> - criminals asking for verification codes</li>
+                        <li><strong>Malware distribution</strong> - links to infected apps</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Card 2: Real-World Impact -->
+            <div class="col-lg-4 col-md-6">
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Real-World Impact</h3>
+                    <p>Spam messages cause billions in losses annually:</p>
+                    <ul>
+                        <li><strong>$10.5B+</strong> annual fraud losses in the US alone</li>
+                        <li><strong>75%</strong> of users receive spam messages weekly</li>
+                        <li><strong>1 in 5</strong> people fall victim to SMS scams</li>
+                        <li><strong>Personal data theft</strong> leads to identity fraud</li>
+                        <li><strong>Financial accounts</strong> compromised through phishing</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Card 3: How to Protect -->
+            <div class="col-lg-4 col-md-6">
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Protect Yourself</h3>
+                    <p>Essential security practices:</p>
+                    <ul>
+                        <li><strong>Never click</strong> suspicious links</li>
+                        <li><strong>Verify senders</strong> before responding</li>
+                        <li><strong>Never share</strong> OTP or verification codes</li>
+                        <li><strong>Use spam detection</strong> tools like SpamShield</li>
+                        <li><strong>Report spam</strong> to your service provider</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Case Studies Section -->
+<section class="info-section" style="background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);">
+    <div class="container">
+        <h2 class="section-title">Real-World Case Studies</h2>
+        
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="case-study">
+                    <h4><i class="fas fa-user-shield"></i> Sarah's Banking Fraud</h4>
+                    <div class="case-study-loss">Loss: $15,000</div>
+                    <p><strong>What happened:</strong> Sarah received an SMS appearing to be from her bank asking her to "verify account." She clicked the link and entered her credentials. Within hours, fraudsters emptied her savings account. This is a classic phishing attack targeting financial information.</p>
+                </div>
+
+                <div class="case-study">
+                    <h4><i class="fas fa-mobile-alt"></i> James' OTP Scam</h4>
+                    <div class="case-study-loss">Loss: $8,500</div>
+                    <p><strong>What happened:</strong> James received a message claiming he won a lottery prize and needed to "activate" it. When he clicked, he was asked for his mobile OTP. Scammers used this to access his mobile payment app and transferred funds. Never share your OTP!</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="case-study">
+                    <h4><i class="fas fa-credit-card"></i> Emma's PayPal Spoofing</h4>
+                    <div class="case-study-loss">Loss: $6,200</div>
+                    <p><strong>What happened:</strong> Emma received what looked like a PayPal security alert. The URL was nearly identical to PayPal's but slightly different. She unknowingly entered her credentials on the fake site. Criminals accessed her linked bank account.</p>
+                </div>
+
+                <div class="case-study">
+                    <h4><i class="fas fa-identity-card"></i> Alex's Identity Theft</h4>
+                    <div class="case-study-loss">Loss: $12,000+ (Credit damage)</div>
+                    <p><strong>What happened:</strong> Alex received a message asking to "confirm identity" for a delivery. After providing information, criminals used his identity to take out loans. Recovery took years and caused severe credit damage.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tips & Best Practices Section -->
+<section class="info-section">
+    <div class="container">
+        <h2 class="section-title">Expert Tips to Stay Safe</h2>
+        
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="tip-item">
+                    <div class="tip-icon">1</div>
+                    <div class="tip-content">
+                        <h4>Verify Before Clicking</h4>
+                        <p>Always verify the sender's identity independently. Don't click links in unsolicited messages. Check official websites directly instead of using links from texts.</p>
+                    </div>
+                </div>
+
+                <div class="tip-item">
+                    <div class="tip-icon">2</div>
+                    <div class="tip-content">
+                        <h4>Protect Your OTP</h4>
+                        <p>Your One-Time Password (OTP) is your last line of defense. Never share it with anyone, not even customer service representatives or banks.</p>
+                    </div>
+                </div>
+
+                <div class="tip-item">
+                    <div class="tip-icon">3</div>
+                    <div class="tip-content">
+                        <h4>Check URL Carefully</h4>
+                        <p>Scammers use URLs that look similar to legitimate ones (e.g., "paypa1.com" instead of "paypal.com"). Always check for slight variations in domain names.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="tip-item">
+                    <div class="tip-icon">4</div>
+                    <div class="tip-content">
+                        <h4>Update Security Software</h4>
+                        <p>Keep your phone's OS and security apps updated. Use antivirus software and enable spam filtering on your phone's messaging app.</p>
+                    </div>
+                </div>
+
+                <div class="tip-item">
+                    <div class="tip-icon">5</div>
+                    <div class="tip-content">
+                        <h4>Report Suspicious Messages</h4>
+                        <p>Don't just delete spam. Report it to your carrier and the relevant authorities. This helps protect others and enables law enforcement action.</p>
+                    </div>
+                </div>
+
+                <div class="tip-item">
+                    <div class="tip-icon">6</div>
+                    <div class="tip-content">
+                        <h4>Use SpamShield Detection</h4>
+                        <p>Copy suspicious messages into SpamShield to instantly detect if they're spam or legitimate. Our AI model analyzes text patterns used in common scams.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section style="background: linear-gradient(135deg, #1e3a5f 0%, #0f2a47 100%); color: white; padding: 4rem 2rem; text-align: center;">
+    <div class="container">
+        <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1.5rem;">
+            Test Your Message Now
+        </h2>
+        <p style="font-size: 1.2rem; color: #d1d5db; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+            Paste a suspicious message below and let our AI instantly determine if it's spam or legitimate. Start protecting yourself today.
+        </p>
+        <a href="{% url 'message_detection' %}" class="btn btn-primary-custom btn-lg">
+            <i class="fas fa-shield-alt"></i> Go to Message Detection
+        </a>
+    </div>
+</section>
+
+{% endblock %}
+>>>>>>> cfef04c (Add complete project with updated README and frontend code)
