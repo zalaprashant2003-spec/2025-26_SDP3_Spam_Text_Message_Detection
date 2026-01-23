@@ -15,4 +15,4 @@ venv/
 *.pkl
 .env
 credentials.json
-token.json
+tokens

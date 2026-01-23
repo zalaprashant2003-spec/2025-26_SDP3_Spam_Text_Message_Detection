@@ -3,7 +3,8 @@ import base64
 import time
 import pickle
 import requests
-import certifi
+from pathlib import Path
+from dotenv import load_dotenv
 
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -11,19 +12,22 @@ from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
 
 # ================= CONFIG ================= #
-SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
-
-import os
-from pathlib import Path
-from dotenv import load_dotenv
+SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
-
 CHECK_INTERVAL = 60  # seconds
+
+USER_CHAT_MAP_RAW = os.getenv("USER_CHAT_MAP", "")
+
+USER_CHAT_MAP = {}
+for pair in USER_CHAT_MAP_RAW.split(","):
+    if pair.strip():
+        email, chat_id = pair.split(":")
+        USER_CHAT_MAP[email.strip()] = chat_id.strip()
+
 # ========================================== #
 
 # Load ML model
@@ -34,36 +38,39 @@ with open("model_store/vectorizer.pkl", "rb") as f:
     vectorizer = pickle.load(f)
 
 
-def authenticate_gmail():
+def authenticate_gmail(email_address):
+    BASE_PATH = Path(__file__).resolve().parent
+    TOKEN_DIR = BASE_PATH / "tokens"
+    TOKEN_DIR.mkdir(exist_ok=True)
+
+    token_file = TOKEN_DIR / f"token_{email_address.replace('@', '_')}.json"
     creds = None
 
-    if os.path.exists("token.json"):
-        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+    if token_file.exists():
+        creds = Credentials.from_authorized_user_file(token_file, SCOPES)
 
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                "credentials.json", SCOPES
+                BASE_PATH / "credentials.json",
+                SCOPES
             )
             creds = flow.run_local_server(port=0)
 
-        with open("token.json", "w") as token:
-            token.write(creds.to_json())
+        token_file.write_text(creds.to_json())
 
     return build("gmail", "v1", credentials=creds)
 
 
+
 def get_unread_emails(service):
-    # Gmail search query: unread emails from last 1 day
-    query = "is:unread newer_than:1d"  # 1 day = 24 hours
+    query = "is:unread newer_than:1d"
     results = service.users().messages().list(
         userId="me", labelIds=["INBOX"], q=query
     ).execute()
-
     return results.get("messages", [])
-
 
 
 def read_email(service, msg_id):
@@ -71,13 +78,16 @@ def read_email(service, msg_id):
         userId="me", id=msg_id, format="full"
     ).execute()
 
-    payload = message["payload"]
+    payload = message.get("payload", {})
     headers = payload.get("headers", [])
 
     subject = ""
+    to_email = ""
     for header in headers:
         if header["name"] == "Subject":
             subject = header["value"]
+        if header["name"] == "To":
+            to_email = header["value"]
 
     body = ""
     parts = payload.get("parts")
@@ -88,11 +98,11 @@ def read_email(service, msg_id):
                 if data:
                     body = base64.urlsafe_b64decode(data).decode("utf-8", errors="ignore")
     else:
-        data = payload["body"].get("data")
+        data = payload.get("body", {}).get("data")
         if data:
             body = base64.urlsafe_b64decode(data).decode("utf-8", errors="ignore")
 
-    return subject + " " + body
+    return subject, to_email, body
 
 
 def is_spam(text):
@@ -101,55 +111,58 @@ def is_spam(text):
     return prediction[0] == 1
 
 
-def send_telegram_notification(message):
+def send_telegram_notification(message, chat_id):
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     data = {
-        "chat_id": TELEGRAM_CHAT_ID,
+        "chat_id": chat_id,
         "text": message
     }
     try:
-        # Use certifi to verify SSL safely
-        response = requests.post(url, data=data, verify=False)
-        response.raise_for_status()
+        requests.post(url, data=data, verify=False).raise_for_status()
     except requests.exceptions.RequestException as e:
         print("Telegram error:", e)
 
 
 def main():
-    service = authenticate_gmail()
-    print("📧 Gmail Spam Notifier Started...")
+    services = {}
 
-    processed_ids = set()
+    # Authenticate all accounts ONCE
+    for email_address in USER_CHAT_MAP:
+        print(f"🔐 Authenticating {email_address}")
+        services[email_address] = authenticate_gmail(email_address)
+
+    print("🚀 Gmail spam notifier running")
 
     while True:
         try:
-            messages = get_unread_emails(service)
+            for email_address, service in services.items():
+                chat_id = USER_CHAT_MAP[email_address]
+                messages = get_unread_emails(service)
 
-            for msg in messages:
-                msg_id = msg["id"]
-                if msg_id in processed_ids:
-                    continue
+                for msg in messages:
+                    subject, to_email, email_text = read_email(service, msg["id"])
 
-                email_text = read_email(service, msg_id)
+                    print("=" * 50)
+                    print(f"Account: {email_address}")
+                    print(f"To: {to_email}")
+                    print(f"Subject: {subject}")
+                    print("=" * 50)
 
-                if not is_spam(email_text):
-                    send_telegram_notification(
-                        "✅ New email received (not spam)."
-                    )
-                else:
-                    send_telegram_notification(
-                        "🚫 Spam email detected. Notification suppressed."
-                    )
-
-
-                processed_ids.add(msg_id)
+                    if not is_spam(email_text):
+                        send_telegram_notification(
+                            f"📩 New email for {email_address}\nSubject: {subject}",
+                            chat_id
+                        )
 
             time.sleep(CHECK_INTERVAL)
 
+        except KeyboardInterrupt:
+            print("🛑 Stopped by user")
+            break
+
         except Exception as e:
-            print("Error:", e)
+            print("⚠ Error:", e)
             time.sleep(10)
 
-
 if __name__ == "__main__":
-    main() 
+    main()
