@@ -50,10 +50,13 @@ Contains 5169 labeled messages (spam & ham).
        - Add a simple user interface to test message predictions.
 - Lab4 - Add simple frontend and connect with model.
 - Lab5 - Connect model with telegram bot for Email and balaced dataset.
-- Lab6/7 - Modern UI Design & Django Integration
+- Lab6/7
+       - Modern UI Design & Django Integration
        - Designed responsive website using Bootstrap 5 with professional cyber-security theme
        - Updated spam.csv dataset and retrained Naive Bayes model for improved detection accuracy
        - Enabled instant email-based spam notifications via Telegram Bot
+- Lab8 
+       - Add Support Vector Machine Algo for train the model.
 
 how to add users:
 google cloud console/default gemini project/api service/auth contest screen/audience
