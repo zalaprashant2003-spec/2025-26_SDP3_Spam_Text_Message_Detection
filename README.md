@@ -54,3 +54,6 @@ Contains 5169 labeled messages (spam & ham).
        - Designed responsive website using Bootstrap 5 with professional cyber-security theme
        - Updated spam.csv dataset and retrained Naive Bayes model for improved detection accuracy
        - Enabled instant email-based spam notifications via Telegram Bot
+
+how to add users:
+google cloud console/default gemini project/api service/auth contest screen/audience

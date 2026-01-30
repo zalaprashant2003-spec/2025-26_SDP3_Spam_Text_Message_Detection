@@ -1,0 +1,13 @@
+{% extends 'project/base.html' %}
+
+{% block title %}Home - SpamShield | Protect from Spam Messages{% endblock %}
+
+{% block content %}
+<h2>Login</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+</form>
+<a href="{% url 'register' %}">Don't have account? Register</a>
+{% endblock %}
