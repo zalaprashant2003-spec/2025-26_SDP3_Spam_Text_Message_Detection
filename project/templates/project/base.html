@@ -19,19 +19,18 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'home' %}">
-                <i class="fas fa-shield-alt"></i> SpamShield
+                <i class="fas fa-shield-alt"></i>
+                SpamShield
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <!-- Always visible links -->
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">
                             <i class="fas fa-home"></i> Home
@@ -47,8 +46,7 @@
                             <i class="fas fa-envelope"></i> Email Spam Detection
                         </a>
                     </li>
-
-                    <!-- Dynamic Auth Links -->
+                     <!-- Dynamic Auth Links -->
                     {% if request.session.user_email %}
                         <!-- Logged in -->
                         <li class="nav-item">
@@ -75,12 +73,12 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="container my-4">
+    <main>
         {% block content %}{% endblock %}
     </main>
 
     <!-- Footer -->
-    <footer class="bg-dark text-light pt-4">
+    <footer>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-4 mb-4">
@@ -90,9 +88,9 @@
                 <div class="col-md-4 mb-4">
                     <h5>Quick Links</h5>
                     <ul class="list-unstyled">
-                        <li><a class="text-light" href="{% url 'home' %}">Home</a></li>
-                        <li><a class="text-light" href="{% url 'message_detection' %}">Message Detection</a></li>
-                        <li><a class="text-light" href="{% url 'email_detection' %}">Email Detection</a></li>
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'message_detection' %}">Message Detection</a></li>
+                        <li><a href="{% url 'email_detection' %}">Email Detection</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4 mb-4">
@@ -100,8 +98,8 @@
                     <p>Your data is processed securely and never stored. We use advanced ML algorithms to detect spam accurately.</p>
                 </div>
             </div>
-            <div class="footer-divider my-2 border-top border-secondary"></div>
-            <div class="footer-bottom text-center pb-2">
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
                 <p>&copy; 2025 SpamShield - Spam Detection System. All rights reserved. | Protecting users from spam threats worldwide.</p>
             </div>
         </div>
