@@ -9,4 +9,8 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('message-detection/', views.message_detection, name='message_detection'),
     path('email-detection/', views.email_detection, name='email_detection'),
+    # 
+    path("gmail/auth/", views.gmail_auth, name="gmail_auth"),
+    path("gmail/callback/", views.gmail_callback, name="gmail_callback"),
+    # 
 ]

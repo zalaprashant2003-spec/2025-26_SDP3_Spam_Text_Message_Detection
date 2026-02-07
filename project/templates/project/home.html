@@ -222,4 +222,19 @@
     <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
+<!--  -->
+{% if request.session.user_email %}
+    <a href="{% url 'gmail_auth' %}" class="btn btn-danger">
+        Connect Gmail
+    </a>
+
+    {% if gmail_connected %}
+        <p style="color:green;font-weight:bold;">✅ Gmail Connected</p>
+    {% endif %}
+{% else %}
+    <a href="{% url 'login' %}" class="btn btn-warning">
+        Login to Connect Gmail
+    </a>
+{% endif %}
+<!--  -->
 {% endblock %}
