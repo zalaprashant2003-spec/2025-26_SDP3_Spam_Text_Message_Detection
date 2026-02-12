@@ -87,22 +87,27 @@
                 <p style="color: var(--text-secondary); text-align: center; margin-bottom: 1.5rem;">
                     Sign up to be notified when email spam detection becomes available.
                 </p>
-                <form style="display: flex; gap: 0.5rem;">
-                    <input 
-                        type="email" 
-                        placeholder="Enter your email" 
-                        class="form-control" 
-                        style="flex: 1;"
-                        required
-                    >
-                    <button 
-                        type="submit" 
-                        class="btn btn-primary-custom" 
-                        style="white-space: nowrap;"
-                    >
-                        <i class="fas fa-bell"></i> Notify Me
-                    </button>
+                <form method="POST" action="{% url 'notify_email' %}" style="display: flex; gap: 0.5rem;">
+                {% csrf_token %}
+                
+                <input 
+                    type="text" 
+                    name="chat_id"
+                    placeholder="Enter Chat ID" 
+                    class="form-control" 
+                    style="flex: 1;"
+                    required
+                >
+
+                <button 
+                    type="submit" 
+                    class="btn btn-primary-custom" 
+                    style="white-space: nowrap;"
+                >
+                    <i class="fas fa-bell"></i> Notify Me
+                </button>
                 </form>
+
                 <small style="color: #9ca3af; text-align: center; display: block; margin-top: 0.75rem;">
                     We'll email you as soon as the feature launches
                 </small>

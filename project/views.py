@@ -114,7 +114,7 @@ def gmail_auth(request):
     flow = Flow.from_client_secrets_file(
         CREDENTIALS_FILE,
         scopes=SCOPES,
-        include_granted_scopes=False,
+        # include_granted_scopes=False,
         redirect_uri="http://127.0.0.1:8080/gmail/callback/"
     )
 
@@ -162,3 +162,69 @@ def gmail_callback(request):
 
     # ✅ Go back to HOME
     return redirect("/")
+
+# 
+# 
+
+import json
+import os
+from django.shortcuts import redirect
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+FILE_PATH = "email_notify.json"
+
+def load_json_file():
+    # Auto create file if not exists
+    if not os.path.exists(FILE_PATH):
+        with open(FILE_PATH, "w") as f:
+            json.dump([], f)
+        return []
+
+    # Empty file case
+    if os.stat(FILE_PATH).st_size == 0:
+        return []
+
+    with open(FILE_PATH, "r") as f:
+        return json.load(f)
+
+
+@csrf_exempt
+def notify_email(request):
+    if request.method == "POST":
+
+        # Get email from session
+        email = request.session.get("user_email")
+        chat_id = request.POST.get("chat_id")
+
+        if not email:
+            return redirect("login")   # user not logged in
+
+        if not chat_id:
+            return redirect(request.META.get("HTTP_REFERER", "/"))
+
+        data = load_json_file()
+
+        # Update if email exists
+        updated = False
+        for item in data:
+            if item["email"] == email:
+                item["chat_id"] = chat_id
+                updated = True
+                break
+
+        # Create new entry
+        if not updated:
+            data.append({
+                "email": email,
+                "chat_id": chat_id
+            })
+
+        # Save JSON
+        with open(FILE_PATH, "w") as f:
+            json.dump(data, f, indent=4)
+
+        # ✅ Return back to previous page
+        return redirect(request.META.get("HTTP_REFERER", "/"))
+
+    return JsonResponse({"error": "Invalid request"}, status=405)

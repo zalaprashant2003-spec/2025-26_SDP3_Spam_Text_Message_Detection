@@ -3,6 +3,7 @@ import base64
 import time
 import pickle
 import requests
+import json
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -20,13 +21,15 @@ load_dotenv(BASE_DIR / ".env")
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 CHECK_INTERVAL = 60  # seconds
 
-USER_CHAT_MAP_RAW = os.getenv("USER_CHAT_MAP", "")
+# ✅ Load email-chat map from JSON file instead of .env
+JSON_FILE = BASE_DIR / "email_notify.json"
 
 USER_CHAT_MAP = {}
-for pair in USER_CHAT_MAP_RAW.split(","):
-    if pair.strip():
-        email, chat_id = pair.split(":")
-        USER_CHAT_MAP[email.strip()] = chat_id.strip()
+if JSON_FILE.exists():
+    with open(JSON_FILE, "r") as f:
+        data = json.load(f)
+        for item in data:
+            USER_CHAT_MAP[item["email"]] = item["chat_id"]
 
 # ========================================== #
 
