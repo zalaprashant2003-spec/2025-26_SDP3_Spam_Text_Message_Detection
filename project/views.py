@@ -12,6 +12,25 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 #     """Render the home page with hero section and info cards"""
 #     return render(request, "project/home.html")
 
+import requests
+from pathlib import Path
+from dotenv import load_dotenv
+def send_telegram_notification(message, chat_id):
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    load_dotenv(BASE_DIR / ".env")
+
+    TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+
+    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+    data = {
+        "chat_id": chat_id,
+        "text": message
+    }
+    # try:
+    requests.post(url, data=data, verify=False).raise_for_status()
+    # except requests.exceptions.RequestException as e:
+    #     print("Telegram error:", e)
+
 
 def message_detection(request):
     """Render the message spam detection page with form and results"""
@@ -78,7 +97,6 @@ from django.http import HttpResponse
 
 # Gmail API Scope
 SCOPES = [
-    "https://www.googleapis.com/auth/gmail.modify",
     "https://www.googleapis.com/auth/gmail.readonly"
 ]
 
@@ -120,7 +138,7 @@ def gmail_auth(request):
 
     auth_url, state = flow.authorization_url(
     access_type="offline",
-    include_granted_scopes="true",
+    # include_granted_scopes="true",
     prompt="consent"
 )
 
@@ -202,9 +220,20 @@ def notify_email(request):
 
         if not chat_id:
             return redirect(request.META.get("HTTP_REFERER", "/"))
+        # 
+        # 
+        # 
+        try:
+            send_telegram_notification("you gave chatid for spam email detection", chat_id)
+        except Exception as e:
+            messages.error(request, f"Either chatid is wrong or you have not started the bot")
+            return redirect(request.META.get("HTTP_REFERER", "/"))
 
+        # 
+        # 
+        # 
         data = load_json_file()
-
+    
         # Update if email exists
         updated = False
         for item in data:

@@ -107,6 +107,13 @@
                     <i class="fas fa-bell"></i> Notify Me
                 </button>
                 </form>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">
+                        {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
 
                 <small style="color: #9ca3af; text-align: center; display: block; margin-top: 0.75rem;">
                     We'll email you as soon as the feature launches

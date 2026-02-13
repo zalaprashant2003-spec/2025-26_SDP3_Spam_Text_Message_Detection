@@ -13,7 +13,7 @@ from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
 
 # ================= CONFIG ================= #
-SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
+SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
