@@ -3,6 +3,9 @@
 {% block title %}Login - SpamShield{% endblock %}
 
 {% block content %}
+<a href="{% url 'google_login' %}" class="btn btn-danger w-100 mt-3">
+    <i class="fab fa-google"></i> Continue with Google
+</a>
 <section class="info-section" style="min-height: calc(100vh - 200px); display: flex; align-items: center;">
     <div class="container">
         <div class="row justify-content-center">

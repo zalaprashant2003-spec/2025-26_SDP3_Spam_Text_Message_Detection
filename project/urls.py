@@ -14,4 +14,7 @@ urlpatterns = [
     path("gmail/callback/", views.gmail_callback, name="gmail_callback"),
     # 
     path("notify/", views.notify_email, name="notify_email"),
+    # 
+    path("google/login/", views.google_login, name="google_login"),
+    path("google/callback/", views.google_callback, name="google_callback"),
 ]

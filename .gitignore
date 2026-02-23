@@ -15,5 +15,6 @@ venv/
 *.pkl
 .env
 credentials.json
+client_secret.json
 tokens
 email_notify.json

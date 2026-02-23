@@ -257,3 +257,60 @@ def notify_email(request):
         return redirect(request.META.get("HTTP_REFERER", "/"))
 
     return JsonResponse({"error": "Invalid request"}, status=405)
+
+
+from google_auth_oauthlib.flow import Flow
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
+from django.shortcuts import redirect
+from .models import EmailAccount
+import os
+
+GOOGLE_CLIENT_SECRETS = "project/client_secret.json"
+SCOPES = ["openid", "https://www.googleapis.com/auth/userinfo.email"]
+REDIRECT_URI = "http://127.0.0.1:8080/google/callback/"
+
+
+# 🔹 Redirect user to Google
+def google_login(request):
+    flow = Flow.from_client_secrets_file(
+        GOOGLE_CLIENT_SECRETS,
+        scopes=SCOPES,
+        redirect_uri=REDIRECT_URI
+    )
+
+    auth_url, state = flow.authorization_url(prompt="consent")
+    request.session["google_state"] = state
+
+    return redirect(auth_url)
+
+
+# 🔹 Google callback
+def google_callback(request):
+    state = request.session.get("google_state")
+
+    flow = Flow.from_client_secrets_file(
+        GOOGLE_CLIENT_SECRETS,
+        scopes=SCOPES,
+        state=state,
+        redirect_uri=REDIRECT_URI
+    )
+
+    flow.fetch_token(authorization_response=request.build_absolute_uri())
+    credentials = flow.credentials
+
+    # Get user info
+    request_session = google_requests.Request()
+    idinfo = id_token.verify_oauth2_token(
+        credentials.id_token, request_session
+    )
+
+    email = idinfo["email"]
+
+    # ✅ Save user in DB if not exists
+    EmailAccount.objects.get_or_create(email=email)
+
+    # ✅ Your session login
+    request.session["user_email"] = email
+
+    return redirect("home")
