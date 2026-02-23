@@ -96,9 +96,9 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 # Gmail API Scope
-SCOPES = [
-    "https://www.googleapis.com/auth/gmail.readonly"
-]
+# SCOPES = [
+#     "https://www.googleapis.com/auth/gmail.readonly"
+# ]
 
 
 # File paths
@@ -125,6 +125,10 @@ def home(request):
 
 # ---------------- GOOGLE LOGIN REDIRECT ----------------
 def gmail_auth(request):
+    SCOPES = [
+    "https://www.googleapis.com/auth/gmail.readonly"
+]
+
     # 🔐 Force login first
     if "user_email" not in request.session:
         return redirect("login")
@@ -151,6 +155,10 @@ def gmail_auth(request):
 
 # ---------------- GOOGLE CALLBACK ----------------
 def gmail_callback(request):
+    SCOPES = [
+    "https://www.googleapis.com/auth/gmail.readonly"
+]
+
     state = request.session.get("gmail_state")
     if not state:
         return redirect("/")
@@ -193,6 +201,10 @@ from django.views.decorators.csrf import csrf_exempt
 FILE_PATH = "email_notify.json"
 
 def load_json_file():
+    SCOPES = [
+    "https://www.googleapis.com/auth/gmail.readonly"
+]
+
     # Auto create file if not exists
     if not os.path.exists(FILE_PATH):
         with open(FILE_PATH, "w") as f:
@@ -209,6 +221,10 @@ def load_json_file():
 
 @csrf_exempt
 def notify_email(request):
+    SCOPES = [
+    "https://www.googleapis.com/auth/gmail.readonly"
+]
+
     if request.method == "POST":
 
         # Get email from session
@@ -266,13 +282,18 @@ from django.shortcuts import redirect
 from .models import EmailAccount
 import os
 
-GOOGLE_CLIENT_SECRETS = "project/client_secret.json"
-SCOPES = ["openid", "https://www.googleapis.com/auth/userinfo.email"]
-REDIRECT_URI = "http://127.0.0.1:8080/google/callback/"
+# GOOGLE_CLIENT_SECRETS = "project/client_secret.json"
+# SCOPES = ["openid", "https://www.googleapis.com/auth/userinfo.email"]
+# REDIRECT_URI = "http://127.0.0.1:8080/google/callback/"
 
 
 # 🔹 Redirect user to Google
 def google_login(request):
+    GOOGLE_CLIENT_SECRETS = "project/client_secret.json"
+    SCOPES = ["openid", "https://www.googleapis.com/auth/userinfo.email"]
+    REDIRECT_URI = "http://127.0.0.1:8080/google/callback/"
+
+
     flow = Flow.from_client_secrets_file(
         GOOGLE_CLIENT_SECRETS,
         scopes=SCOPES,
@@ -287,6 +308,10 @@ def google_login(request):
 
 # 🔹 Google callback
 def google_callback(request):
+    GOOGLE_CLIENT_SECRETS = "project/client_secret.json"
+    SCOPES = ["openid", "https://www.googleapis.com/auth/userinfo.email"]
+    REDIRECT_URI = "http://127.0.0.1:8080/google/callback/"
+
     state = request.session.get("google_state")
 
     flow = Flow.from_client_secrets_file(
