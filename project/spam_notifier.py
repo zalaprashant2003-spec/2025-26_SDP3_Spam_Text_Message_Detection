@@ -71,7 +71,7 @@ def authenticate_gmail(email_address):
 def get_unread_emails(service):
     query = "is:unread newer_than:1d"
     results = service.users().messages().list(
-        userId="me", labelIds=["INBOX"], q=query
+        userId="me", q=query
     ).execute()
     return results.get("messages", [])
 
@@ -151,9 +151,14 @@ def main():
                     print(f"Subject: {subject}")
                     print("=" * 50)
 
-                    if not is_spam(email_text):
+                    if is_spam(email_text):
                         send_telegram_notification(
-                            f"📩 New email for {email_address}\nSubject: {subject}",
+                            f"⚠ SPAM email for {email_address}\nSubject: {subject}",
+                            chat_id
+                        )
+                    else:
+                        send_telegram_notification(
+                            f"📩 Normal email for {email_address}\nSubject: {subject}",
                             chat_id
                         )
 
