@@ -122,6 +122,10 @@ TOKEN_DIR = os.path.join(APP_DIR, "tokens")
 def home(request):
     return render(request, "project/home.html")
 
+# ---------------- GUIDELINES PAGE ----------------
+def guidelines(request):
+    """Render the user guide / how-it-works page."""
+    return render(request, "project/guidelines.html")
 
 # ---------------- GOOGLE LOGIN REDIRECT ----------------
 def gmail_auth(request):
