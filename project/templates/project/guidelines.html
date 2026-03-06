@@ -1,0 +1,119 @@
+{% extends 'project/base.html' %}
+
+{% block title %}How It Works | SpamShield{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>How SpamShield Works</h1>
+        <p>Follow these simple steps to connect your email, link Telegram, and receive real-time spam detection alerts.</p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="{% url 'login' %}" class="btn btn-primary-custom">
+                <i class="fas fa-sign-in-alt"></i> Login First
+            </a>
+            <a href="#steps" class="btn btn-secondary-custom">
+                <i class="fas fa-arrow-down"></i> See Steps
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Step-by-Step Guide -->
+<section class="info-section" id="steps">
+    <div class="container">
+        <h2 class="section-title">Step-by-Step Setup Guide</h2>
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <h3>1. Login Requirement</h3>
+                    <p>To use SpamShield, you must first log in with a valid email ID. This ensures that your settings and alerts are linked to your account.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>2. Connect Gmail</h3>
+                    <p>After logging in, navigate to the <strong>Email</strong> section and click the <strong>Connect Gmail</strong> button to authorize access to your inbox for spam scanning.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>3. Successful Connection</h3>
+                    <p>Once connected, the system will show a success message confirming that Gmail is linked and ready for spam analysis.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="fab fa-telegram-plane"></i>
+                    </div>
+                    <h3>4. Get Telegram Chat ID</h3>
+                    <p>Open Telegram and search for the bot named <strong>ID BOT</strong>. Send the command <code>/getid</code> and the bot will reply with your Chat ID.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <h3>5. Submit Chat ID</h3>
+                    <p>Copy your Chat ID from Telegram and paste it into the field provided in the system. This enables the bot to send alerts directly to you.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h3>6. Request Processing</h3>
+                    <p>After submitting the Chat ID, SpamShield sends a request to process your inbox. Please wait a short while while the system analyzes incoming emails.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>7. Spam Detection Results</h3>
+                    <p>When processing completes, results are sent through the Telegram bot named <strong>Spam detector</strong>. The bot will list emails detected as spam and not spam.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3>8. Telegram Notifications</h3>
+                    <p>You will receive Telegram notifications on your phone indicating:</p>
+                    <ul>
+                        <li><strong>Spam emails</strong> detected in your inbox</li>
+                        <li><strong>Non-spam emails</strong> confirmed safe</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="{% url 'message_detection' %}" class="btn btn-primary-custom btn-lg">
+                <i class="fas fa-shield-alt"></i> Go to Spam Detection
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

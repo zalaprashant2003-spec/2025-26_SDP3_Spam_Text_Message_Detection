@@ -46,6 +46,11 @@
                             <i class="fas fa-envelope"></i> Email Spam Detection
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'guidelines' %}active{% endif %}" href="{% url 'guidelines' %}">
+                            <i class="fas fa-book-open"></i> Guidelines
+                        </a>
+                    </li>
                      <!-- Dynamic Auth Links -->
                     {% if request.session.user_email %}
                         <!-- Logged in -->
