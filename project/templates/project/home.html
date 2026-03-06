@@ -36,25 +36,6 @@
                         <i class="fas fa-arrow-down"></i> Learn More
                     </a>
                </div>
-<div class="mt-4 text-center">
-{% if request.session.user_email %}
-    <a href="{% url 'gmail_auth' %}" class="btn btn-secondary-custom">
-        <i class="fas fa-envelope"></i> Connect Gmail
-    </a>
-
-    {% if gmail_connected %}
-    <br>
-    <br>
-        <p >
-            You Allowed access of your Gmail Account for spam Detection.
-        </p>
-    {% endif %}
-{% else %}
-    <a href="{% url 'login' %}" class="btn btn-primary-custom">
-        <i class="fas fa-sign-in-alt"></i> Login to Connect Gmail
-    </a>
-{% endif %}
-</div>
             </div>
         </section>
 

@@ -44,7 +44,18 @@ def message_detection(request):
 
 def email_detection(request):
     """Render the email spam detection 'Coming Soon' page"""
-    return render(request, "project/email_detection.html")
+    user_email = request.session.get("user_email")
+    gmail_connected = False
+
+    # ✅ Only check token if user logged in
+    if user_email:
+        token_file = os.path.join(TOKEN_DIR, f"token_{user_email.replace('@','_')}.json")
+        gmail_connected = os.path.exists(token_file)
+
+    return render(request, "project/email_detection.html", {
+        "gmail_connected": gmail_connected,
+        "is_logged_in": bool(user_email)
+    })
 
 from django.shortcuts import render, redirect
 from .forms import RegisterForm, LoginForm
@@ -109,18 +120,7 @@ TOKEN_DIR = os.path.join(APP_DIR, "tokens")
 
 # ---------------- HOME PAGE ----------------
 def home(request):
-    user_email = request.session.get("user_email")
-    gmail_connected = False
-
-    # ✅ Only check token if user logged in
-    if user_email:
-        token_file = os.path.join(TOKEN_DIR, f"token_{user_email.replace('@','_')}.json")
-        gmail_connected = os.path.exists(token_file)
-
-    return render(request, "project/home.html", {
-        "gmail_connected": gmail_connected,
-        "is_logged_in": bool(user_email)
-    })
+    return render(request, "project/home.html")
 
 
 # ---------------- GOOGLE LOGIN REDIRECT ----------------
