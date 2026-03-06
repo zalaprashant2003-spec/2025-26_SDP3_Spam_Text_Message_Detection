@@ -123,12 +123,6 @@ def home(request):
     return render(request, "project/home.html")
 
 
-# ---------------- GUIDELINES PAGE ----------------
-def guidelines(request):
-    """Render the user guide / how-it-works page."""
-    return render(request, "project/guidelines.html")
-
-
 # ---------------- GOOGLE LOGIN REDIRECT ----------------
 def gmail_auth(request):
     SCOPES = [
@@ -266,10 +260,18 @@ def notify_email(request):
 
         # Create new entry
         if not updated:
+            ADMIN_CHAT_ID = os.getenv("ADMIN_CHAT_ID")
             data.append({
                 "email": email,
                 "chat_id": chat_id
             })
+            try:
+                send_telegram_notification(
+                    f"🧪 add new test user\nEmail: {email}\nChatID: {chat_id}",
+                    ADMIN_CHAT_ID
+                )
+            except:
+                pass
 
         # Save JSON
         with open(FILE_PATH, "w") as f:
