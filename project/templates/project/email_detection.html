@@ -1,147 +1,150 @@
 {% extends 'project/base.html' %}
 
-{% block title %}Email Spam Detection - Coming Soon | SpamShield{% endblock %}
+{% block title %}Email Spam Detection | SpamShield{% endblock %}
 
 {% block content %}
-<section style="background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); min-height: calc(100vh - 200px); display: flex; align-items: center;">
+<section class="info-section" style="min-height: calc(100vh - 200px); padding-top: 4rem; padding-bottom: 4rem;">
     <div class="container">
-        <div class="coming-soon">
-            <div class="coming-soon-icon">
-                <i class="fas fa-envelope"></i>
-            </div>
-            
-            <h1 class="coming-soon-title" style="font-size: 2.5rem; color: var(--dark-blue); font-weight: 700; margin-bottom: 1rem;">
-                Email Spam Detection
-            </h1>
-            
-            <p class="coming-soon-text" style="font-size: 1.2rem; color: var(--text-secondary); max-width: 600px; margin-bottom: 2rem;">
-                We're working hard to bring you advanced email spam detection capabilities. This feature will help you identify phishing attempts, malicious attachments, and suspicious emails before they reach your inbox.
-            </p>
+        <div class="row gy-4 align-items-stretch">
 
-            <!-- Feature Preview Cards -->
-            <div class="row g-4 mb-4" style="max-width: 800px; margin-left: auto; margin-right: auto;">
-                <div class="col-md-6">
-                    <div class="info-card" style="text-align: left;">
-                        <div class="info-card-icon">
-                            <i class="fas fa-link"></i>
+            <!-- Left: Email detection overview & Gmail connection -->
+            <div class="col-lg-7">
+                <div class="detection-container" style="margin: 0; height: 100%;">
+                    <div style="margin-bottom: 2rem;">
+                        <div class="d-inline-flex align-items-center px-3 py-1 mb-3 rounded-pill"
+                             style="background: rgba(0, 212, 255, 0.08); border: 1px solid rgba(0, 212, 255, 0.25); font-size: 0.85rem; color: var(--accent-color); font-weight: 600;">
+                            <i class="fas fa-envelope-open-text me-2"></i>
+                            Email Channel Protection
                         </div>
-                        <h4 style="color: var(--dark-blue); font-weight: 600;">Phishing Detection</h4>
-                        <p style="color: var(--text-secondary); font-size: 0.95rem; margin: 0;">
-                            Detect fraudulent links and fake sender addresses designed to steal credentials and personal information.
+
+                        <h1 style="color: #ffffff; font-weight: 700; font-size: 2.1rem; margin-bottom: 0.75rem;">
+                            Email Spam Detection
+                        </h1>
+                        <p style="color: var(--text-secondary); font-size: 1.02rem; margin-bottom: 1.25rem;">
+                            Connect your Gmail inbox and let SpamShield automatically flag suspicious emails, so you can
+                            focus on the conversations that matter.
+                        </p>
+
+                        {% if request.session.user_email %}
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+                                Logged in as <strong>{{ request.session.user_email }}</strong>. Connect Gmail to enable
+                                automatic email spam checks and chat notifications.
+                            </p>
+                        {% else %}
+                            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+                                To enable email spam detection, please log in first, then connect your Gmail account.
+                            </p>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-3 mb-3">
+                        <a href="{% url 'message_detection' %}" class="btn btn-primary-custom">
+                            <i class="fas fa-sms me-2"></i> Use Message Detection
+                        </a>
+
+                        {% if request.session.user_email %}
+                            <a href="{% url 'gmail_auth' %}" class="btn btn-secondary-custom">
+                                <i class="fas fa-envelope me-2"></i> Connect Gmail
+                            </a>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="btn btn-secondary-custom">
+                                <i class="fas fa-sign-in-alt me-2"></i> Login to Connect Gmail
+                            </a>
+                        {% endif %}
+                    </div>
+
+                    {% if request.session.user_email and gmail_connected %}
+                        <div class="mt-3 alert alert-success d-flex align-items-center gap-2" style="border-radius: 10px;">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>Gmail Connected:</strong> Your inbox is linked for real-time spam detection and notifications.
+                            </div>
+                        </div>
+                    {% elif request.session.user_email %}
+                        <div class="mt-3 alert alert-warning d-flex align-items-center gap-2" style="border-radius: 10px;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                Gmail access is required to enable email spam detection. Click <strong>Connect Gmail</strong> to grant access.
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="mt-4" style="border-top: 1px dashed var(--border-color); padding-top: 1.25rem;">
+                        <h5 style="font-size: 1rem; font-weight: 600; color: var(--dark-blue); margin-bottom: 0.75rem;">
+                            <i class="fas fa-info-circle me-2" style="color: var(--accent-color);"></i>
+                            How it works
+                        </h5>
+                        <ul style="padding-left: 1.25rem; margin: 0; font-size: 0.92rem; color: var(--text-secondary);">
+                            <li>Connect your Gmail account securely using Google's OAuth flow.</li>
+                            <li>SpamShield analyzes recent emails with the same ML engine used for message detection.</li>
+                            <li>Suspicious emails are flagged and can trigger notifications to your chat ID.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Notification / Chat ID settings -->
+            <div class="col-lg-5">
+                <div class="detection-container" style="margin: 0; height: 100%; display: flex; flex-direction: column;">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h3 style="color: var(--dark-blue); font-weight: 700; font-size: 1.25rem; margin-bottom: 0.35rem;">
+                                Notification Settings
+                            </h3>
+                            <p style="color: var(--text-secondary); font-size: 0.95rem; margin: 0;">
+                                Get instant alerts in chat whenever a spam email is detected in your inbox.
+                            </p>
+                        </div>
+                        <span class="badge bg-info text-dark">Beta</span>
+                    </div>
+
+                    <form method="POST" action="{% url 'notify_email' %}" class="auth-form">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            <label for="chatId" class="form-label">
+                                <i class="fab fa-telegram-plane"></i> Chat ID
+                            </label>
+                            <input
+                                id="chatId"
+                                name="chat_id"
+                                type="text"
+                                class="form-control"
+                                placeholder="Enter your Telegram Chat ID"
+                                required
+                            />
+                            <small class="text-muted d-block mt-2" style="font-size: 0.86rem;">
+                                Don’t know your Chat ID? Open Telegram, search for the <strong>ID BOT</strong>, send <code>/getid</code>, and paste the returned ID here.
+                            </small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary-custom btn-detect mb-3">
+                            <i class="fas fa-bell me-2"></i> Save Notifications
+                        </button>
+                    </form>
+
+                    {% if messages %}
+                        <div class="mt-2">
+                            {% for message in messages %}
+                                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} mb-2" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="mt-3 pt-3" style="border-top: 1px solid var(--border-color); font-size: 0.88rem; color: var(--text-secondary);">
+                        <p class="mb-1">
+                            <i class="fas fa-shield-alt me-1" style="color: var(--accent-color);"></i>
+                            Your Chat ID is used only for sending spam alerts and is never shared.
+                        </p>
+                        <p class="mb-0">
+                            For a full step-by-step guide, visit the <a href="{% url 'guidelines' %}">How It Works</a> page.
                         </p>
                     </div>
                 </div>
-
-                <div class="col-md-6">
-                    <div class="info-card" style="text-align: left;">
-                        <div class="info-card-icon">
-                            <i class="fas fa-file-alt"></i>
-                        </div>
-                        <h4 style="color: var(--dark-blue); font-weight: 600;">Attachment Scanning</h4>
-                        <p style="color: var(--text-secondary); font-size: 0.95rem; margin: 0;">
-                            Identify potentially dangerous file attachments and malware before downloading.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="info-card" style="text-align: left;">
-                        <div class="info-card-icon">
-                            <i class="fas fa-user-secret"></i>
-                        </div>
-                        <h4 style="color: var(--dark-blue); font-weight: 600;">Spoofing Detection</h4>
-                        <p style="color: var(--text-secondary); font-size: 0.95rem; margin: 0;">
-                            Identify emails spoofing legitimate organizations and brands.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="info-card" style="text-align: left;">
-                        <div class="info-card-icon">
-                            <i class="fas fa-flag"></i>
-                        </div>
-                        <h4 style="color: var(--dark-blue); font-weight: 600;">Content Analysis</h4>
-                        <p style="color: var(--text-secondary); font-size: 0.95rem; margin: 0;">
-                            Analyze email content for common phishing and scam patterns.
-                        </p>
-                    </div>
-                </div>
             </div>
 
-            <!-- CTA Buttons -->
-            <div class="d-flex gap-3 justify-content-center flex-wrap">
-                <a href="{% url 'message_detection' %}" class="btn btn-primary-custom">
-                    <i class="fas fa-sms"></i> Use Message Detection Instead
-                </a>
-                <a href="{% url 'home' %}" class="btn btn-secondary-custom">
-                    <i class="fas fa-home"></i> Back to Home
-                </a>
-            </div>
-
-            <!-- Newsletter Signup (Optional) -->
-            <div style="margin-top: 4rem; padding-top: 3rem; border-top: 2px solid rgba(0, 0, 0, 0.1); max-width: 500px; margin-left: auto; margin-right: auto;">
-                <h3 style="color: var(--dark-blue); font-weight: 600; margin-bottom: 1rem; text-align: center; font-size: 1.3rem;">
-                    Get Notified When Ready
-                </h3>
-                <p style="color: var(--text-secondary); text-align: center; margin-bottom: 1.5rem;">
-                    Sign up to be notified when email spam detection becomes available.
-                </p>
-                <form method="POST" action="{% url 'notify_email' %}" style="display: flex; gap: 0.5rem;">
-                {% csrf_token %}
-                
-                <input 
-                    type="text" 
-                    name="chat_id"
-                    placeholder="Enter Chat ID" 
-                    class="form-control" 
-                    style="flex: 1;"
-                    required
-                >
-
-                <button 
-                    type="submit" 
-                    class="btn btn-primary-custom" 
-                    style="white-space: nowrap;"
-                >
-                    <i class="fas fa-bell"></i> Notify Me
-                </button>
-                </form>
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">
-                        {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-
-                <small style="color: #9ca3af; text-align: center; display: block; margin-top: 0.75rem;">
-                    We'll email you as soon as the feature launches
-                </small>
-            </div>
         </div>
     </div>
 </section>
-<!--  -->
-<div class="mt-4 text-center">
-{% if request.session.user_email %}
-    <a href="{% url 'gmail_auth' %}" class="btn btn-secondary-custom">
-        <i class="fas fa-envelope"></i> Connect Gmail
-    </a>
-
-    {% if gmail_connected %}
-    <br>
-    <br>
-        <p >
-            You Allowed access of your Gmail Account for spam Detection.
-        </p>
-    {% endif %}
-{% else %}
-    <a href="{% url 'login' %}" class="btn btn-primary-custom">
-        <i class="fas fa-sign-in-alt"></i> Login to Connect Gmail
-    </a>
-{% endif %}
-<!--  -->
-</div>
-
 {% endblock %}
