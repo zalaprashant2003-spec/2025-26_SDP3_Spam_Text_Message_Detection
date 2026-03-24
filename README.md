@@ -46,6 +46,52 @@ Contains 5169 labeled messages (spam & ham).
 8. Telegram Bot monitors emails and sends spam notifications to users automatically
 9. Result is displayed on frontend
 
+## How to Run the Project
+
+Step 1: Train the Model
+First, train the Naive Bayes model using below command (use correct path):
+- python train_nb_model.py (for Naive Bayes)
+
+Step 2: Apply Migrations
+Run these commands in terminal:
+- python manage.py makemigrations
+- python manage.py migrate
+
+Step 3: Run the Server
+Start the Django server:
+- python manage.py runserver 8080
+
+Now open browser and go to:
+http://127.0.0.1:8080
+
+You will see the home page and can start using the project.
+
+Email Connection & Telegram Notification
+
+1. First, register and login with your account.
+2. Go to Email Detection page and connect your Gmail.
+   (You can also read Guidelines page for help)
+
+3. Now open another terminal (so total 2 terminals will be running):
+
+   Terminal 1 (Already running):
+   - python manage.py runserver 8080
+
+   Terminal 2 (go inside project directory):
+   - python spam_notifier.py
+
+4. Now system will start monitoring your emails.
+
+If any spam email is detected, you will receive message on Telegram.
+
+## How to Add Users (Gmail Access Setup)
+1. Go to Google Cloud Console  
+2. Open your project (Default / Gemini Project)  
+3. Go to **API & Services**  
+4. Click on **OAuth Consent Screen**  
+5. Open **Audience / Test Users** section  
+6. Add user email IDs who can access the system  
+
 ## Project Purpose
 This system helps users to detect spam messages easily and protect from fraud, phishing links, and unwanted messages.
 It provides both manual message checking and automatic email monitoring with instant alerts.
@@ -71,6 +117,3 @@ It provides both manual message checking and automatic email monitoring with ins
         - Bug Solving
         - UI imorovement
         - Project Report
-
-how to add users:
-google cloud console/default gemini project/api service/auth contest screen/audience
