@@ -6,10 +6,12 @@ This project is a Machine Learning-based system that detects whether a text mess
 - Detects spam SMS messages
 - Simple and clean user interface using Streamlit
 - Email Detection for this use Telegram Bot.
-      - If any spam message appears in an email ID, the
-      Telegram bot notifies the user instantly.
+      - If any spam message appears in an email ID, the Telegram bot notifies the user instantly.
       - Users can check spam messages directly via Telegram, without opening emails
 - Professional responsive website interface for managing detections
+- Supports multiple ML algorithms like Naive Bayes and Support Vector Machine (SVM)
+- Real-time message analysis and prediction
+- User authentication system for secure access
 
 ## Tech Stack
 - Python
@@ -21,13 +23,14 @@ This project is a Machine Learning-based system that detects whether a text mess
 - Streamlit
 - Git & GitHub
 - Telegram Bot API
+- Gmail API
 
 ## Dataset
 Dataset used: *SMS Spam Collection Dataset*
 Source: Kaggle Learning Repository  
 Contains 5169 labeled messages (spam & ham).
 
-##How the System Works
+## How the System Works
 1. Load and clean the dataset
 2. Preprocess text:
    -Lowercasing
@@ -43,6 +46,10 @@ Contains 5169 labeled messages (spam & ham).
 8. Telegram Bot monitors emails and sends spam notifications to users automatically
 9. Result is displayed on frontend
 
+## Project Purpose
+This system helps users to detect spam messages easily and protect from fraud, phishing links, and unwanted messages.
+It provides both manual message checking and automatic email monitoring with instant alerts.
+
 ## Work
 - Lab1-Study how to do this project, find dataset.
 - Lab2&3
@@ -57,6 +64,13 @@ Contains 5169 labeled messages (spam & ham).
        - Enabled instant email-based spam notifications via Telegram Bot
 - Lab8 
        - Add Support Vector Machine Algo for train the model.
+- Lab9
+        - Connecting Google Authetication with our system
+- Lab10 to Lab12
+        - Testing
+        - Bug Solving
+        - UI imorovement
+        - Project Report
 
 how to add users:
 google cloud console/default gemini project/api service/auth contest screen/audience
