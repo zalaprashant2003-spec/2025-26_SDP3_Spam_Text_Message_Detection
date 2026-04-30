@@ -170,6 +170,9 @@ def gmail_auth(request):
 
 # ---------------- GOOGLE CALLBACK ----------------
 def gmail_callback(request):
+    if request.GET.get("error") == "access_denied":
+        return redirect("home")  # or home page
+
     SCOPES = [
     "https://www.googleapis.com/auth/gmail.readonly"
 ]
@@ -331,6 +334,9 @@ def google_login(request):
 
 # 🔹 Google callback
 def google_callback(request):
+    if request.GET.get("error") == "access_denied":
+        return redirect("login")  # or home page
+
     GOOGLE_CLIENT_SECRETS = "project/client_secret.json"
     SCOPES = ["openid", "https://www.googleapis.com/auth/userinfo.email"]
     REDIRECT_URI = "http://127.0.0.1:8080/google/callback/"
