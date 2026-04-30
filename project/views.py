@@ -64,18 +64,26 @@ from django.contrib import messages
 
 # Register view
 def register_view(request):
+    success_msg = None
+    error_msg = None
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()  # saves email and password
-            messages.success(request, "Account created successfully!")
-            return redirect('login')
+            success_msg = "Account created successfully!"
+            form = RegisterForm()
+        else:
+            error_msg = "Account with this email already exists."
     else:
         form = RegisterForm()
-    return render(request, 'project/register.html', {'form': form})
-
+    return render(request, 'project/register.html', {
+        'form': form,
+        'success_msg': success_msg,
+        'error_msg': error_msg
+    })
 # Login view
 def login_view(request):
+    error_msg = None
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -84,13 +92,16 @@ def login_view(request):
             try:
                 account = EmailAccount.objects.get(email=email, password=password)
                 request.session['user_email'] = account.email  # simple session
-                messages.success(request, "Logged in successfully!")
+                # messages.success(request, "Logged in successfully!")
                 return redirect('home')
             except EmailAccount.DoesNotExist:
-                messages.error(request, "Invalid email or password")
+                error_msg = "Invalid email or password"
     else:
         form = LoginForm()
-    return render(request, 'project/login.html', {'form': form})
+    return render(request, 'project/login.html', {
+        'form': form,
+        'error_msg': error_msg
+    })
 
 def logout_view(request):
     request.session.flush()  # removes all session data

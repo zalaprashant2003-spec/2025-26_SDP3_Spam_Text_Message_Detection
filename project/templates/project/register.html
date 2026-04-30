@@ -19,7 +19,33 @@
                             Join SpamShield to start protecting your messages from spam and fraud.
                         </p>
                     </div>
+                    {% if success_msg %}
+                        <div style="
+                            background: #e8f5e9;
+                            color: #2e7d32;
+                            padding: 10px;
+                            border-radius: 8px;
+                            text-align: center;
+                            margin-bottom: 1rem;
+                            font-weight: 500;
+                        ">
+                            {{ success_msg }}
+                        </div>
+                    {% endif %}
 
+                    {% if error_msg %}
+                        <div style="
+                            background: #ffebee;
+                            color: #c62828;
+                            padding: 10px;
+                            border-radius: 8px;
+                            text-align: center;
+                            margin-bottom: 1rem;
+                            font-weight: 500;
+                        ">
+                            {{ error_msg }}
+                        </div>
+                    {% endif %}
                     <form method="post" class="auth-form">
                         {% csrf_token %}
 

@@ -88,4 +88,4 @@ with open(os.path.join(model_dir, "svm_model.pkl"), "wb") as f:
 with open(os.path.join(model_dir, "svm_vectorizer.pkl"), "wb") as f:
     pickle.dump(vectorizer, f)
 
-print("\n✅ SVM model saved successfully")
+print("\n SVM model saved successfully")

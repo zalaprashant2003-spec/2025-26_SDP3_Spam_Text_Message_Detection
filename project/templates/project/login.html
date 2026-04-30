@@ -25,6 +25,19 @@
                     </div>
 
                     <!-- Login Form -->
+                     {% if error_msg %}
+                    <div style="
+                        background: #ffebee;
+                        color: #c62828;
+                        padding: 10px;
+                        border-radius: 8px;
+                        text-align: center;
+                        margin-bottom: 1rem;
+                        font-weight: 500;
+                    ">
+                        {{ error_msg }}
+                    </div>
+                    {% endif %}
                     <form method="post" class="auth-form">
                         {% csrf_token %}
 
